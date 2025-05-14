@@ -2,9 +2,7 @@
 
 An interactive 3D particle visualization controlled through hand gestures.
 
-Live demo: [https://collidingscopes.github.io/stark-shapes/](https://collidingscopes.github.io/stark-shapes/)
-
-Video example: https://www.instagram.com/reel/DH9oY0sR4sJ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==
+[Live Demo](https://collidingscopes.github.io/stark-shapes/) | [Video Example](https://www.instagram.com/reel/DH9oY0sR4sJ/)
 
 <img src="assets/siteOGImage.png">
 
