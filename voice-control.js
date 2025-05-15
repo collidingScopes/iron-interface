@@ -6,6 +6,7 @@ const recognition = new SpeechRecognition();
 recognition.continuous = true;
 recognition.lang = 'en-US';
 recognition.interimResults = false;
+const speechOutput = document.getElementById('speech-output');
 
 const patternListElement = document.querySelector('#patternList ul');
 const patternListItems = patternListElement.querySelectorAll('li');
@@ -13,13 +14,13 @@ const patternListItems = patternListElement.querySelectorAll('li');
 function highlightActivePattern(index) {
     patternListItems.forEach((item, i) => {
         if (i === index) {
-            item.style.color = '#00f3ff';
-            item.style.fontSize = '22px';
+            item.style.color = '#f700ff';
+            item.style.fontSize = '32px';
             item.style.fontWeight = 'bold';
         } else {
-            item.style.color = '';
+            item.style.color = '#ffffff';
             item.style.fontSize = '18px';
-            item.style.fontWeight = '';
+            item.style.fontWeight = 'normal';
         }
     });
 }
@@ -36,6 +37,7 @@ recognition.onresult = function(event) {
     for (let i = event.resultIndex; i < event.results.length; ++i) {
         if (event.results[i].isFinal) {
             const transcript = event.results[i][0].transcript.trim().toLowerCase();
+            speechOutput.textContent = transcript;
             console.log("Heard:", transcript);
             for (const name of patternNames) {
                 if (transcript.includes(name.toLowerCase())) {

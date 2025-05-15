@@ -1,163 +1,163 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Courier New', Courier, monospace;
-  }
-  
-  #container {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg,
-        #00050a 0%,
-        #000a14 50%,
-        #001020 100%
-      );
-    overflow: hidden;
-  }
-  
-  .glow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background: radial-gradient(circle at 50% 50%,
-        rgba(0, 100, 180, 0.02) 0%,
-        rgba(30, 0, 100, 0.03) 50%,
-        transparent 75%
-      );
-    mix-blend-mode: screen;
-    opacity: 0.5;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg,
+      #00050a 0%,
+      #000a14 50%,
+      #001020 100%
+    );
+  overflow: hidden;
+}
+
+.glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%,
+      rgba(0, 100, 180, 0.02) 0%,
+      rgba(30, 0, 100, 0.03) 50%,
+      transparent 75%
+    );
+  mix-blend-mode: screen;
+  opacity: 0.5;
+}
 
 #instructions {
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    color: white;
-    font-size: 13px;
-    background-color: rgba(0, 0, 0, 0.4); /* Darker background */
-    padding: 8px 12px; /* Slightly larger padding */
-    border-radius: 5px; /* Rounded corners */
-    z-index: 100;
-    pointer-events: none;
-    line-height: 1.4;
-    max-width: 300px; /* Limit width */
-    font-family: 'Courier New', Courier, monospace;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+  font-size: 13px;
+  background-color: rgba(0, 0, 0, 0.4); /* Darker background */
+  padding: 8px 12px; /* Slightly larger padding */
+  border-radius: 5px; /* Rounded corners */
+  z-index: 100;
+  pointer-events: none;
+  line-height: 1.4;
+  max-width: 300px; /* Limit width */
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .input_video {
-  /* Make video visible and position top-left */
-  display: block; /* Changed from none */
-  position: fixed;
-  top: 10px;
-  left: 40%;
-  transform: translateX(50%);
-  width: 256px; /* Smaller size */
-  height: 144px; /* Maintain 16:9 ratio */
-  border: 1px solid white;
-  z-index: 101; /* Ensure it's above the main canvas slightly */
-   transform: scaleX(-1); /* Mirror flip */
+/* Make video visible and position top-left */
+display: block; /* Changed from none */
+position: fixed;
+top: 10px;
+left: 20%;
+transform: translateX(50%);
+width: 320px; /* Smaller size */
+height: 180px; /* Maintain 16:9 ratio */
+border: 1px solid white;
+z-index: 101; /* Ensure it's above the main canvas slightly */
+ transform: scaleX(-1); /* Mirror flip */
 }
 .output_canvas {
-   /* Make canvas visible and position over video */
-  display: block; /* Changed from none */
-  position: fixed;
-  top: 10px;
-  left: 40%;
-  transform: translateX(50%);
-  width: 256px; /* Smaller size */
-  height: 144px; /* Maintain 16:9 ratio */
-  z-index: 102; /* Above video */
-  pointer-events: none; /* Allow clicks to go through */
-   transform: scaleX(-1); /* Mirror flip to match video */
+ /* Make canvas visible and position over video */
+display: block; /* Changed from none */
+position: fixed;
+top: 10px;
+left: 20%;
+transform: translateX(50%);
+width: 320px; /* Smaller size */
+height: 180px; /* Maintain 16:9 ratio */
+z-index: 102; /* Above video */
+pointer-events: none; /* Allow clicks to go through */
+ transform: scaleX(-1); /* Mirror flip to match video */
 }
 /* dat.gui styling */
 .dg.ac {
-  z-index: 1000 !important;
-  position: fixed !important;
-  top: 0 !important;
-  right: 0 !important;
-  margin: 0 !important;
-  margin: 0 auto;
-  justify-content: center;
-  text-align: center;
+z-index: 1000 !important;
+position: fixed !important;
+top: 0 !important;
+right: 0 !important;
+margin: 0 !important;
+margin: 0 auto;
+justify-content: center;
+text-align: center;
 }
 
 .dg.main .close-button {
-  background-color: #000 !important;
-  margin: 0 auto;
-  justify-content: center;
-  text-align: center;
+background-color: #000 !important;
+margin: 0 auto;
+justify-content: center;
+text-align: center;
 }
 
 .dg.main {
-  background-color: rgba(0, 0, 0, 0.8) !important;
-  margin-right: 0 !important;
-  max-width: 200px;
-  text-align: center;
-  margin: 0 auto;
-  justify-content: center;
+background-color: rgba(0, 0, 0, 0.8) !important;
+margin-right: 0 !important;
+max-width: 200px;
+text-align: center;
+margin: 0 auto;
+justify-content: center;
 }
 
 /* Instagram credit link styling */
 #instagram-link {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  color: white;
-  font-family: sans-serif;
-  font-size: 14px;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 8px 12px;
-  border-radius: 5px;
-  z-index: 100;
-  /* text-decoration: none; */
-  transition: all 0.3s ease;
-  font-family: 'Courier New', Courier, monospace;
+position: fixed;
+bottom: 10px;
+right: 10px;
+color: white;
+font-family: sans-serif;
+font-size: 14px;
+background-color: rgba(0, 0, 0, 0.4);
+padding: 8px 12px;
+border-radius: 5px;
+z-index: 100;
+/* text-decoration: none; */
+transition: all 0.3s ease;
+font-family: 'Courier New', Courier, monospace;
 }
 
 a {
-  color: white;
+color: white;
 }
 
 #instagram-link:hover {
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.6);
-  /* transform: translateY(-2px); */
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+color: #fff;
+background-color: rgba(0, 0, 0, 0.6);
+/* transform: translateY(-2px); */
+box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
 /* Coffeee link styling */
 #coffee-link {
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  font-family: sans-serif;
-  font-size: 14px;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 8px 12px;
-  border-radius: 5px;
-  z-index: 100;
-  /* text-decoration: none; */
-  transition: all 0.3s ease;
-  font-family: 'Courier New', Courier, monospace;
+position: fixed;
+bottom: 10px;
+left: 50%;
+transform: translateX(-50%);
+color: white;
+font-family: sans-serif;
+font-size: 14px;
+background-color: rgba(0, 0, 0, 0.4);
+padding: 8px 12px;
+border-radius: 5px;
+z-index: 100;
+/* text-decoration: none; */
+transition: all 0.3s ease;
+font-family: 'Courier New', Courier, monospace;
 }
 
 a {
-  color: white;
+color: white;
 }
 
 #coffee-link:hover {
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.6);
-  /* transform: translateY(-2px); */
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+color: #fff;
+background-color: rgba(0, 0, 0, 0.6);
+/* transform: translateY(-2px); */
+box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
 #patternList {
@@ -182,4 +182,29 @@ a {
 
 #patternList li {
   margin-bottom: 4px;
+  transition: all 3s ease;
+}
+
+#speech-output {
+  position: fixed;
+  top: 30px;
+  left: 65%;
+  transform: translateX(-50%);
+  background: #c0c0c0;
+  color: #0000FF;
+  padding: 12px 24px;
+  /* font-family: 'Tahoma', 'Geneva', sans-serif; */
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 1.6em;
+  z-index: 100;
+  pointer-events: none;
+  max-width: 220px;
+  text-align: center;
+  box-shadow:
+    inset -2px -2px 0 #fff,
+    inset 2px 2px 0 #808080,
+    inset -4px -4px 0 #dfdfdf,
+    inset 4px 4px 0 #404040;
+  border: 2px solid #000;
 }

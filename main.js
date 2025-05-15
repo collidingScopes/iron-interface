@@ -6,12 +6,12 @@ Blur shader?
 
 // main.js
 const patterns = [createGrid, createSphere, createSpiral,
-createHelix, createTorus, createGalaxy, createWave,
-createSupernova, createFlower, createVoronoi,];
-
+    createHelix, createTorus, createGalaxy, createWave,
+    createSupernova, createFlower, createVoronoi,];
+    
 const patternNames = ["Cube", "Sphere", "Spiral",
-    "Helix", "Torus", "Galaxy", "Wave",
-    "Supernova", "Flower", "Voronoi", 
+    "Helix", "Donut", "Galaxy", "Wave",
+    "Supernova", "Flower", "Cluster", 
 ];
 
 let hands;
@@ -78,17 +78,17 @@ const params = {
 function startExperience() {
     // Basic check for THREE core first
     if (typeof THREE === 'undefined') {
-      console.error("THREE.js core library not found!");
-      alert("Error: THREE.js library failed to load.");
-      return;
+        console.error("THREE.js core library not found!");
+        alert("Error: THREE.js library failed to load.");
+        return;
     }
     
     // Proceed with initialization
     init();
     if (renderer) {
-      animate();
+        animate();
     } else {
-      console.error("Renderer initialization failed. Animation cannot start.");
+        console.error("Renderer initialization failed. Animation cannot start.");
     }
 }
 
@@ -621,9 +621,9 @@ function onResults(results) {
                 }
             } else if (handDistance >= MIN_HANDS_DISTANCE && handsComeCloser && !handsMovingApart) {
                 // If hands start moving apart before reaching the MIN distance, reset
-                 handsComeCloser = false;
+                    handsComeCloser = false;
             } else if (handDistance >= MIN_HANDS_DISTANCE) {
-                 // Reset if hands are far apart and weren't in the 'close' phase
+                    // Reset if hands are far apart and weren't in the 'close' phase
                 handsComeCloser = false;
                 handsMovingApart = false;
             }
@@ -650,17 +650,17 @@ function onResults(results) {
 
 function setupHandTracking() {
     if (!videoElement || !canvasElement || !canvasCtx) {
-      console.error("Video or Canvas element not ready for Hand Tracking setup.");
-      return;
+        console.error("Video or Canvas element not ready for Hand Tracking setup.");
+        return;
     }
 
     // Check if MediaPipe components are loaded
     if (typeof Hands === 'undefined' || typeof Camera === 'undefined' ||
         typeof drawConnectors === 'undefined' || typeof drawLandmarks === 'undefined') {
-      console.error("MediaPipe Hands/Camera/Drawing library not found.");
-      const instructions = document.getElementById('instructions');
-      if(instructions) instructions.textContent = "Hand tracking library failed to load.";
-      return;
+        console.error("MediaPipe Hands/Camera/Drawing library not found.");
+        const instructions = document.getElementById('instructions');
+        if(instructions) instructions.textContent = "Hand tracking library failed to load.";
+        return;
     }
 
     // Reset clap detection variables
@@ -669,32 +669,32 @@ function setupHandTracking() {
     handsMovingApart = false;
 
     try {
-      hands = new Hands({locateFile: (file) => {
+        hands = new Hands({locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
-      }});
+        }});
 
-      hands.setOptions({
+        hands.setOptions({
         // --- Track up to two hands ---
         maxNumHands: 2,
         // ---
         modelComplexity: 1,
         minDetectionConfidence: 0.6, // Adjusted confidence
         minTrackingConfidence: 0.6
-      });
+        });
 
-      hands.onResults(onResults);
+        hands.onResults(onResults);
 
-      const camera = new Camera(videoElement, {
+        const camera = new Camera(videoElement, {
         onFrame: async () => {
-          if (videoElement.readyState >= 2) { // HAVE_CURRENT_DATA or more
+            if (videoElement.readyState >= 2) { // HAVE_CURRENT_DATA or more
             await hands.send({image: videoElement});
-          }
+            }
         },
         width: 640, // Internal processing resolution
         height: 360
-      });
+        });
 
-      camera.start()
+        camera.start()
         .then(() => console.log("Camera started successfully."))
         .catch(err => {
             console.error("Error starting webcam:", err);
@@ -702,12 +702,12 @@ function setupHandTracking() {
             if(instructions) instructions.textContent = "Could not access webcam. Please grant permission and reload.";
         });
 
-      console.log("Hand tracking setup complete.");
+        console.log("Hand tracking setup complete.");
 
     } catch (error) {
-      console.error("Error setting up MediaPipe Hands:", error);
-      const instructions = document.getElementById('instructions');
-      if(instructions) instructions.textContent = "Error initializing hand tracking.";
+        console.error("Error setting up MediaPipe Hands:", error);
+        const instructions = document.getElementById('instructions');
+        if(instructions) instructions.textContent = "Error initializing hand tracking.";
     }
 }
 
@@ -722,10 +722,10 @@ function setupBloom() {
     
     // Add the UnrealBloomPass with nice default values for particles
     const bloomPass = new THREE.UnrealBloomPass(
-      new THREE.Vector2(window.innerWidth, window.innerHeight), // resolution
-      2.0,    // strength (intensity of the bloom)
-      0.1,    // radius (how far the bloom extends)
-      0.1,    // threshold (minimum brightness to apply bloom)
+        new THREE.Vector2(window.innerWidth, window.innerHeight), // resolution
+        2.0,    // strength (intensity of the bloom)
+        0.1,    // radius (how far the bloom extends)
+        0.1,    // threshold (minimum brightness to apply bloom)
     );
     composer.addPass(bloomPass);
     
@@ -737,32 +737,32 @@ function setupBloom() {
     
     // Add effect controls to the GUI if it exists
     if (gui) {
-      const bloomFolder = gui.addFolder('Bloom Effect');
-      bloomFolder.add(bloomPass, 'strength', 0, 3, 0.05).name('Intensity');
-      bloomFolder.add(bloomPass, 'radius', 0, 1, 0.05).name('Radius');
-      bloomFolder.add(bloomPass, 'threshold', 0, 1, 0.05).name('Threshold');
-      bloomFolder.open();
-      
-      // Add Chromatic Aberration controls
-      const chromaticFolder = gui.addFolder('Chromatic Aberration');
-      chromaticFolder.add(chromaticAberrationPass.uniforms.strength, 'value', 0, 0.5, 0.001).name('Strength');
-      chromaticFolder.open();
+        const bloomFolder = gui.addFolder('Bloom Effect');
+        bloomFolder.add(bloomPass, 'strength', 0, 3, 0.05).name('Intensity');
+        bloomFolder.add(bloomPass, 'radius', 0, 1, 0.05).name('Radius');
+        bloomFolder.add(bloomPass, 'threshold', 0, 1, 0.05).name('Threshold');
+        bloomFolder.open();
+        
+        // Add Chromatic Aberration controls
+        const chromaticFolder = gui.addFolder('Chromatic Aberration');
+        chromaticFolder.add(chromaticAberrationPass.uniforms.strength, 'value', 0, 0.5, 0.001).name('Strength');
+        chromaticFolder.open();
     }
     
     // Update the resize handler to include the composer
     const originalResize = onWindowResize;
     onWindowResize = function() {
-      originalResize();
-      if (composer) {
+        originalResize();
+        if (composer) {
         composer.setSize(window.innerWidth, window.innerHeight);
         // Update shader resolution uniform when window is resized
         if (chromaticAberrationPass) {
-          chromaticAberrationPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
+            chromaticAberrationPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
         }
-      }
+        }
     };
 }
-
+    
 function calculateDistance(landmark1, landmark2) {
     if (!landmark1 || !landmark2) return Infinity;
     const dx = landmark1.x - landmark2.x;
