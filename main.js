@@ -6,12 +6,12 @@ Blur shader?
 
 // main.js
 const patterns = [createGrid, createSphere, createSpiral,
-createHelix, createTorus, createVortex, createGalaxy,
-createWave, createMobius, createSupernova, createKleinBottle,
-createFlower, createVoronoi, createFractalTree,];
-const patternNames = ["Cube", "Sphere", "Spiral", "Helix",
-    "Torus", "Vortex", "Galaxy", "Wave", "Möbius", "Supernova",
-    "Klein Bottle", "Flower", "Voronoi", "Fractal Tree", 
+createHelix, createTorus, createGalaxy, createWave,
+createSupernova, createFlower, createVoronoi,];
+
+const patternNames = ["Cube", "Sphere", "Spiral",
+    "Helix", "Torus", "Galaxy", "Wave",
+    "Supernova", "Flower", "Voronoi", 
 ];
 
 let hands;
@@ -41,7 +41,6 @@ let lastClapTime = 0;
 const MIN_HANDS_DISTANCE = 0.12; // Threshold for hands being close enough
 const CLAP_COOLDOWN = 1500; // Cooldown between claps (ms)
 
-// --- Camera Rotation Variables ---
 let targetCameraAngleX = 0;   // Target horizontal rotation angle (radians) based on hand
 let currentCameraAngleX = 0; // Current smoothed horizontal rotation angle
 let initialHandAngle = null; // Store initial angle when right hand appears
@@ -53,14 +52,8 @@ let currentCameraAngleY = 0;  // Current smoothed vertical rotation angle
 const maxYAngle = Math.PI / 4; // Limit the vertical rotation to prevent flipping (45 degrees)
 let initialHandYPosition = null; // Store initial Y position when right hand appears
 const yRotationSensitivity = 0.5; // Sensitivity for Y rotation (lower than X for more control)
-// ---
 
-// References for drawing
 let canvasCtx, canvasElement, videoElement;
-// --- END: Updated Hand Tracking Variables ---
-
-
-// Initialize variables
 let scene, camera, renderer, particles;
 let composer;
 let time = 0;
@@ -69,7 +62,6 @@ let transitionProgress = 0;
 let isTransitioning = false;
 let gui;
 
-// Animation parameters (configurable via dat.gui)
 const params = {
     particleCount: 15000,
     transitionSpeed: 0.005,
@@ -100,94 +92,7 @@ function startExperience() {
     }
 }
 
-// --- Add this line to trigger execution after all resources are loaded ---
 window.onload = startExperience;
-// --- End of Execution Start block ---
-
-// --- PARTICLE TEXTURE ---
-function createParticleTexture() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 64;
-    canvas.height = 64;
-
-    const context = canvas.getContext('2d');
-    const gradient = context.createRadialGradient(
-    canvas.width / 2,
-    canvas.height / 2,
-    0,
-    canvas.width / 2,
-    canvas.height / 2,
-    canvas.width / 2
-);
-
-gradient.addColorStop(0, 'rgba(255,255,255,1)');
-gradient.addColorStop(0.2, 'rgba(255,255,255,0.8)');
-gradient.addColorStop(0.4, 'rgba(255,255,255,0.4)');
-gradient.addColorStop(1, 'rgba(255,255,255,0)');
-
-context.fillStyle = gradient;
-context.fillRect(0, 0, canvas.width, canvas.height);
-
-const texture = new THREE.Texture(canvas);
-texture.needsUpdate = true;
-return texture;
-}
-
-// --- COLOR PALETTES ---
-const colorPalettes = [
-    [ new THREE.Color(0x3399ff), new THREE.Color(0x44ccff), new THREE.Color(0x0055cc) ],
-    [ new THREE.Color(0xff3399), new THREE.Color(0xcc00ff), new THREE.Color(0x660099), new THREE.Color(0xaa33ff) ],
-    [ new THREE.Color(0x33ff99), new THREE.Color(0x33ff99), new THREE.Color(0x99ff66), new THREE.Color(0x008844) ],
-    [ new THREE.Color(0xff9933), new THREE.Color(0xffcc33), new THREE.Color(0xff6600), new THREE.Color(0xffaa55) ],
-    [ new THREE.Color(0x9933ff), new THREE.Color(0xff66aa), new THREE.Color(0xff0066), new THREE.Color(0xcc0055) ]
-];
-
-// --- PARTICLE SYSTEM ---
-function createParticleSystem() {
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(params.particleCount * 3);
-    const colors = new Float32Array(params.particleCount * 3);
-    const sizes = new Float32Array(params.particleCount);
-
-    const initialPattern = patterns[0];
-    const initialPalette = colorPalettes[0];
-
-    for (let i = 0; i < params.particleCount; i++) {
-
-    const pos = initialPattern(i, params.particleCount);
-    positions[i * 3] = pos.x;
-    positions[i * 3 + 1] = pos.y;
-    positions[i * 3 + 2] = pos.z;
-
-    const baseColor = initialPalette[0];
-    const variation = 1.0; // Add variation
-
-    colors[i * 3] = baseColor.r * variation;
-    colors[i * 3 + 1] = baseColor.g * variation;
-    colors[i * 3 + 2] = baseColor.b * variation;
-
-    sizes[i] = 1.0; // Assign individual size variation
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1)); // Store base sizes
-    geometry.userData.currentColors = new Float32Array(colors); // Store initial colors for transitions
-
-    const material = new THREE.PointsMaterial({
-    size: params.particleSize,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.5,
-    blending: THREE.AdditiveBlending,
-    sizeAttenuation: true, // Make distant particles smaller
-
-    //map: createParticleTexture()
-    // depthWrite: false // Often needed with AdditiveBlending if particles overlap strangely
-    });
-    return new THREE.Points(geometry, material);
-
-}
 
 // --- INIT THREE.JS ---
 function init() {
@@ -211,7 +116,6 @@ function init() {
     scene.add(particles);
     window.addEventListener('resize', onWindowResize);
     initGUI();
-    updatePatternName(patternNames[currentPattern], true);
 
     // --- Get references for drawing ---
     videoElement = document.querySelector('.input_video');
@@ -249,7 +153,6 @@ function forcePatternChange() {
     }
     const nextPattern = (currentPattern + 1) % patterns.length;
     transitionToPattern(nextPattern);
-    updatePatternName(patternNames[nextPattern]); // Show name briefly
 }
 
 function completeCurrentTransition() {
@@ -293,32 +196,6 @@ function completeCurrentTransition() {
     delete particles.userData.targetPattern;
     isTransitioning = false;
     transitionProgress = 0;
-}
-
-function updatePatternName(name, instant = false) {
-    const el = document.getElementById('patternName');
-    
-    if (!el) return;
-    el.textContent = name;
-
-    if (instant) {
-        el.style.transition = 'none'; // Disable transition for instant display
-        el.style.opacity = '1';
-        // Set a timeout to fade out after a delay, even for instant
-        setTimeout(() => {
-            if(el) {
-                el.style.transition = 'opacity 0.5s ease'; // Re-enable transition for fade-out
-                el.style.opacity = '0';
-            }
-        }, 3500); // Keep visible slightly longer
-    } else {
-        el.style.transition = 'opacity 0.5s ease';
-        el.style.opacity = '1'; // Fade in
-        // Set timeout to fade out
-        setTimeout(() => {
-            if(el) el.style.opacity = '0';
-        }, 3500); // Fade out after 2.5 seconds
-    }
 }
 
 function transitionToPattern(newPattern) {
@@ -444,9 +321,8 @@ function animate() {
                 }
             }
         }
-    } // End particle update check
+    }
 
-    // --- Camera Movement --- Updated Logic ---
     if (camera) {
         // --- Smooth Zoom Distance (Driven by Left Hand Pinch) ---
         const zoomSpeed = 0.04;
@@ -479,9 +355,7 @@ function animate() {
     
         camera.lookAt(0, 0, 0); // Always look at the center of the scene
     }
-    // --- End Camera Movement ---
 
-    // --- Rendering ---
     if (composer) {
         composer.render();
     } else if (renderer && scene && camera) {
@@ -536,9 +410,7 @@ gui = null;
 
 // --- Updated onResults with Pinch and Rotation ---
 function onResults(results) {
-    // Check if drawing context and MediaPipe utils are available
     if (!canvasCtx || !canvasElement || !videoElement || typeof drawConnectors === 'undefined' || typeof drawLandmarks === 'undefined') {
-        // console.warn("Canvas context or MediaPipe drawing utilities not ready.");
         return;
     }
 
@@ -554,10 +426,6 @@ function onResults(results) {
     // --- Drawing Setup ---
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    // Don't draw video image onto the canvas, keep it separate
-    // if (results.image) {
-    // canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
-    // }
 
     // --- Process Detected Hands ---
     if (handDetected) {
@@ -818,14 +686,7 @@ function setupHandTracking() {
 
       const camera = new Camera(videoElement, {
         onFrame: async () => {
-          // Ensure video is playing before sending frames
           if (videoElement.readyState >= 2) { // HAVE_CURRENT_DATA or more
-            // Flip the video frame horizontally before sending to MediaPipe
-            // This makes the hand movements in the preview match the real world
-            // However, landmarks will be horizontally flipped. We correct for this
-            // by using 1.0 - landmark.x where needed, or just ensuring our
-            // relative calculations (like angle, distance) work correctly.
-            // For pinch distance and hand angle, relative calculations are fine.
             await hands.send({image: videoElement});
           }
         },
@@ -906,8 +767,5 @@ function calculateDistance(landmark1, landmark2) {
     if (!landmark1 || !landmark2) return Infinity;
     const dx = landmark1.x - landmark2.x;
     const dy = landmark1.y - landmark2.y;
-    // Optional: include z distance if needed, but for screen-space pinch, x/y is often enough
-    // const dz = landmark1.z - landmark2.z;
-    // return Math.sqrt(dx * dx + dy * dy + dz * dz);
     return Math.sqrt(dx * dx + dy * dy);
 }

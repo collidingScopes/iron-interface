@@ -32,26 +32,6 @@
     mix-blend-mode: screen;
     opacity: 0.5;
   }
-  
-  
-#patternName {
-    position: fixed;
-    top: 25px;
-    left: 25px;
-    /* transform: translateX(-50%); */
-    color: white;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 30px;
-    pointer-events: none;
-    z-index: 103;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    text-align: center;
-    background-color: rgba(0, 13, 255, 0.5);
-    padding: 8px 18px;
-    /* border-radius: 25px; */
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-}
 
 #instructions {
     position: fixed;
@@ -130,7 +110,7 @@
   right: 10px;
   color: white;
   font-family: sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   background-color: rgba(0, 0, 0, 0.4);
   padding: 8px 12px;
   border-radius: 5px;
@@ -159,7 +139,7 @@ a {
   transform: translateX(-50%);
   color: white;
   font-family: sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   background-color: rgba(0, 0, 0, 0.4);
   padding: 8px 12px;
   border-radius: 5px;
@@ -178,4 +158,28 @@ a {
   background-color: rgba(0, 0, 0, 0.6);
   /* transform: translateY(-2px); */
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+#patternList {
+  position: fixed;
+  top: 20px; /* Positioned below the patternName label */
+  left: 20px;
+  z-index: 104;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 10px 14px;
+  border-radius: 5px;
+  color: white;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+#patternList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#patternList li {
+  margin-bottom: 4px;
 }

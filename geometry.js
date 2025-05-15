@@ -587,3 +587,87 @@ function createVoronoi(i, count) {
         }
     }
 }
+
+function createParticleTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+
+    const context = canvas.getContext('2d');
+    const gradient = context.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        0,
+        canvas.width / 2,
+        canvas.height / 2,
+        canvas.width / 2
+    );
+
+    gradient.addColorStop(0, 'rgba(255,255,255,1)');
+    gradient.addColorStop(0.2, 'rgba(255,255,255,0.8)');
+    gradient.addColorStop(0.4, 'rgba(255,255,255,0.4)');
+    gradient.addColorStop(1, 'rgba(255,255,255,0)');
+
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    const texture = new THREE.Texture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+}
+
+// --- COLOR PALETTES ---
+const colorPalettes = [
+    [ new THREE.Color(0x3399ff), new THREE.Color(0x44ccff), new THREE.Color(0x0055cc) ],
+    [ new THREE.Color(0xff3399), new THREE.Color(0xcc00ff), new THREE.Color(0x660099), new THREE.Color(0xaa33ff) ],
+    [ new THREE.Color(0x33ff99), new THREE.Color(0x33ff99), new THREE.Color(0x99ff66), new THREE.Color(0x008844) ],
+    [ new THREE.Color(0xff9933), new THREE.Color(0xffcc33), new THREE.Color(0xff6600), new THREE.Color(0xffaa55) ],
+    [ new THREE.Color(0x9933ff), new THREE.Color(0xff66aa), new THREE.Color(0xff0066), new THREE.Color(0xcc0055) ]
+];
+
+// --- PARTICLE SYSTEM ---
+function createParticleSystem() {
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(params.particleCount * 3);
+    const colors = new Float32Array(params.particleCount * 3);
+    const sizes = new Float32Array(params.particleCount);
+
+    const initialPattern = patterns[0];
+    const initialPalette = colorPalettes[0];
+
+    for (let i = 0; i < params.particleCount; i++) {
+
+    const pos = initialPattern(i, params.particleCount);
+    positions[i * 3] = pos.x;
+    positions[i * 3 + 1] = pos.y;
+    positions[i * 3 + 2] = pos.z;
+
+    const baseColor = initialPalette[0];
+    const variation = 1.0; // Add variation
+
+    colors[i * 3] = baseColor.r * variation;
+    colors[i * 3 + 1] = baseColor.g * variation;
+    colors[i * 3 + 2] = baseColor.b * variation;
+
+    sizes[i] = 1.0; // Assign individual size variation
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1)); // Store base sizes
+    geometry.userData.currentColors = new Float32Array(colors); // Store initial colors for transitions
+
+    const material = new THREE.PointsMaterial({
+    size: params.particleSize,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.5,
+    blending: THREE.AdditiveBlending,
+    sizeAttenuation: true, // Make distant particles smaller
+
+    //map: createParticleTexture()
+    // depthWrite: false // Often needed with AdditiveBlending if particles overlap strangely
+    });
+    return new THREE.Points(geometry, material);
+
+}
