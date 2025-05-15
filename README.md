@@ -1,8 +1,8 @@
-# Stark Shapes
+# Iron Interface
 
-An interactive 3D particle visualization controlled through hand gestures.
+An interactive 3D particle visualization controlled through hand gestures and voice.
 
-[Live Demo](https://collidingscopes.github.io/stark-shapes/) | [Video Example](https://www.instagram.com/reel/DH9oY0sR4sJ/)
+[Live Demo](https://collidingscopes.github.io/iron-interface/) | [Video Example](https://www.instagram.com/reel/DH9oY0sR4sJ/)
 
 <img src="assets/siteOGImage.png">
 
@@ -11,12 +11,11 @@ An interactive 3D particle visualization controlled through hand gestures.
 - Control the camera with your hands
 - Right hand: pinch to zoom in/out
 - Left hand: rotate to orbit the camera
-- Clap your hands to change to the next pattern
-- 3D geometric patterns include: Cube, Sphere, Spiral, Helix, Galaxy, and more
+- Speak to change to a new pattern ("Jarvis, change to a sphere")
 
 ## Technology
 
-Built with Three.js and MediaPipe Hand Tracking.
+Built with Three.js, MediaPipe Hand Tracking, and Web Speech API.
 
 ## Related Projects
 
